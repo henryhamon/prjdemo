@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :notes, except: [:new, :edit]
   resources :projects, except: [:new, :edit]
   resources :clients, except: [:new, :edit]
   # The priority is based upon order of creation: first created -> highest priority.

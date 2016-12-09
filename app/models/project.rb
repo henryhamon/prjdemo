@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   validates :client, presence: true 
   validates :name, presence: true, uniqueness: true, length: { minimum: 5 } 
+  has_many :notes
  
   # State of task can be new, started, finished
   include AASM
