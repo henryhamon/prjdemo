@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
-  belongs_to :client
-  
+  validates :client, presence: true 
+  validates :name, presence: true, uniqueness: true, length: { minimum: 5 } 
+ 
   # State of task can be new, started, finished
   include AASM
   aasm column: :state, whiny_transitions: false  do
@@ -39,7 +40,7 @@ class Project < ActiveRecord::Base
     self.aasm.events.map(&:name)
   end
 
- def perform_event state_name, user
+ def perform_event state_name
    return false if state_name.blank?
    if Project.events_names.include? state_name.try(:to_sym)
      unless self.send("may_#{state_name}?")

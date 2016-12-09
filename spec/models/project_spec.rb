@@ -3,17 +3,21 @@ require 'rails_helper'
 RSpec.describe Project, type: :model do
   
   before do
-    @executor = FactoryGirl.create :client
     @project = FactoryGirl.create :project
   end
 
-  it 'has "new" state after initialize' do
-    expect(@project.state).to eq("new") 
+  it "is not valid without a name" do
+    project = Project.new(name: nil)
+    expect(project).not_to be_valid
+  end
+
+  it "is valid with a name and client" do
+    project = Project.new(name: "Death Star", client: "Darth Vader")
+    expect(project).to be_valid
   end
   
-  it "belongs to a client" do
-    @executor.projects << @project
-    expect(@project.client).to be @executor
+  it 'has "new" state after initialize' do
+    expect(@project.state).to eq("new") 
   end
   
   it 'states may be changed as new => started => finished' do
@@ -57,14 +61,14 @@ RSpec.describe Project, type: :model do
 
   it 'accepts string as param too' do
     expect(@project.state).to eq("new") 
-    @project.perform_event "start", @executor
+    @project.perform_event "start"
     expect(@project.state).to eq("started") 
-    @project.perform_event "finish", @executor
+    @project.perform_event "finish"
     expect(@project.state).to eq("finished") 
   end
 
   it 'add error if events havent event from params' do
-    @project.perform_event :unknown_event, @executor
+    @project.perform_event :unknown_event
     expect(@project.state).to eq("new") 
     expect(@project.errors.messages.count).to eq(1) 
   end
