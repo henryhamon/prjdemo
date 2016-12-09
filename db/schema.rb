@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161209024248) do
+ActiveRecord::Schema.define(version: 20161209033600) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "name"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20161209024248) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "state"
+    t.datetime "finished_at"
+    t.datetime "archived_at"
   end
 
   add_index "projects", ["client_id"], name: "index_projects_on_client_id"
