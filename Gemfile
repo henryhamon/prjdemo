@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.5'
 gem 'rails-api'
+gem 'aasm'
 gem 'sqlite3'
 
 gem 'spring', :group => :development

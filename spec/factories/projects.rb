@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :client do
+  factory :project do
     name "MyString"
-    active true
+    description "MyText"
   end
 end
