@@ -16,4 +16,10 @@ RSpec.describe Note, type: :model do
     expect(@note.state).to eq("active") 
   end
  
+  it 'should get datetime when archived' do
+    expect(@note.state).to eq("active") 
+    @note.delete
+    expect(@note.state).to eq("archived") 
+    expect(@note.archived_at).to be
+  end
 end

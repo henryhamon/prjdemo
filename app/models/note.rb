@@ -2,6 +2,8 @@ class Note < ActiveRecord::Base
   serialize :metadata, Oj
   belongs_to :project
   
+  scope :list_all, -> { where("state <> 'archived'") }
+  
   # State of note can be active, archived, finished
   include AASM
   aasm column: :state, whiny_transitions: false  do
