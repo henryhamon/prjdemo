@@ -1,4 +1,5 @@
 class Note < ActiveRecord::Base
+  serialize :metadata, Oj
   belongs_to :project
   
   # State of note can be active, archived, finished

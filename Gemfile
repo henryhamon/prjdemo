@@ -4,6 +4,8 @@ gem 'rails', '4.2.5'
 gem 'rails-api'
 gem 'aasm'
 gem 'sqlite3'
+gem 'oj'
+gem 'oj_mimic_json'
 
 gem 'spring', :group => :development
 group :development, :test do

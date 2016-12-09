@@ -1,9 +1,13 @@
 class Project < ActiveRecord::Base
+  serialize :metadata, Oj
+  
   validates :client, presence: true 
   validates :name, presence: true, uniqueness: true, length: { minimum: 5 } 
   has_many :notes
  
-  # State of task can be new, started, finished
+  scope :active, -> { where("state <> 'archived'") }
+  
+  # State of Project can be new, started, finished, archived
   include AASM
   aasm column: :state, whiny_transitions: false  do
     state :new, initial: true
