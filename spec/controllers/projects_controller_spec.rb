@@ -37,7 +37,7 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
   end
   
   it "updates the specified project" do
-    FactoryGirl.create :project, name: 'X wing', client: 'John Doe', id: 1
+    FactoryGirl.create(:project, id: 1)
 
     project_json = { id: 1, client: "Damien White" }
 
@@ -52,7 +52,7 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
   end
   
   it "delete a project" do
-    FactoryGirl.create :project, name: 'Sultans of swing', client: 'Dire Straits', id: 1
+    FactoryGirl.create(:project, id: 1)
     delete :destroy, id: 1
   
     expect(response.status).to eq 200
@@ -60,4 +60,23 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
     expect(body['state']).to eq('archived')
   end
 
+  it "finish a project" do
+    FactoryGirl.create(:project, state:'started', id: 1)
+    get :finish, id: 1
+  
+    expect(response.status).to eq 200
+    body = JSON.parse(response.body)
+    expect(body['state']).to eq('finished')
+  end
+  
+  it "finish a list of projects" do
+    3.times do |t|
+      FactoryGirl.create(:project, state:'started', id: t+1)
+    end
+  
+    post :finish_all, projects: Project.all.map(&:id)
+    expect(response.status).to eq 200
+    body = JSON.parse(response.body)
+    expect(body.size).to eq(3)
+  end
 end

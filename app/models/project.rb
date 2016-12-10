@@ -64,5 +64,16 @@ class Project < ActiveRecord::Base
  def Project.events_names
    Project.aasm.events.map(&:name)
  end
+ 
+ def Project.finish_all(arr)
+   output = []
+   arr.each do |prj|
+     project = self.find(prj)
+     project.finish
+     
+     output << project unless !project.save
+   end
+   output
+ end
 
 end
