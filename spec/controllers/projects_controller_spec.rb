@@ -45,12 +45,19 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
     project:  project_json
 
     expect(response.status).to eq 200
-
     body = JSON.parse(response.body)
 
     project_name = body['name']
     expect(project_name) == 'Damien White'
   end
   
+  it "delete a project" do
+    FactoryGirl.create :project, name: 'Sultans of swing', client: 'Dire Straits', id: 1
+    delete :destroy, id: 1
+  
+    expect(response.status).to eq 200
+    body = JSON.parse(response.body)
+    expect(body['state']).to eq('archived')
+  end
 
 end

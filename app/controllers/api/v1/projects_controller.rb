@@ -1,6 +1,6 @@
 class Api::V1::ProjectsController < BaseApiControllerController
   
-  before_filter :find_project, only: [:show, :update]
+  before_filter :find_project, only: [:show, :update, :destroy]
 
   def index
     render json: Project.active.order(created_at: :desc)
@@ -28,6 +28,15 @@ class Api::V1::ProjectsController < BaseApiControllerController
     end
   end
 
+  def destroy
+    @project.delete
+    if @project.save
+        render json: @project
+    else
+        render nothing: true, status: :bad_request
+    end
+  end
+  
  private
  def find_project
    @project = Project.find(params[:id])
